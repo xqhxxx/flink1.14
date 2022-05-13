@@ -1,0 +1,5 @@
+aaa /home 1000
+bbb /data 2000
+ccc /pic 3000
+bbb /home 4000
+ccc /pic 5000

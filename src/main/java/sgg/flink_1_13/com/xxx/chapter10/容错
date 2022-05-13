@@ -1,0 +1,64 @@
+
+1 检查点
+    1.1周期性的存档  随时存档耗费资源，影响数据处理速度
+        保存时间点 让所有任务将同一个数据处理完 保存---事务  例：kafka offset保存下来
+    1.2从检查点恢复 ：重启应用-读取ck，重置状态--重放数据（偏移量重置）-继续处理数据
+    1.3ck算法 检查点分界线（检查点id ：source算子插入
+            分布式快照算法
+            下游广播分界线
+            分界线对齐 状态持久化（对齐前要缓存数据）
+            先处理缓存数据然后继续处理正常
+          --不对齐保存直接连缓存数据一起保存
+      4ck配置
+    1.5 保存点 Savepoint
+        手动有计划地备份  相当于ck自动保存来说
+        版本管理、flink更新、应用更新、调整并行度、暂停应用
+          设置算子id--状态  设置方法 .uid（"source-id"）
+
+        创建保存点镜像：flink savepoint：jobid [:targetDirectory]
+        可 yarm文件配置
+        可代码配置
+        停作业直接创建保存点： flink stop --savepointPath [:targetDirectory]:jobid
+
+        重启：flink run  -s :savepointPath [runArgs]
+
+
+2 状态一致性
+    一致性：
+        结构准确
+        数据不应该丢失、不应该重复计算
+        故障恢复、重新计算、完全正确
+    分类：
+        AT-MOST-ONCE 最多一次：
+            故障什么都不干 没有保证
+        AT-LEAST-ONCE 至少一次
+            不丢失数据，可能重复处理多次
+        exactly-精准一次
+            恰好处理一次
+            --Checkpoints 来保证
+
+3 端到端一致性： 数据源  流处理器  持久化系统 每个都得一致性
+    source端：可重设数据读取位置
+    内部保证：checkpoint
+    sink端：故障恢复时 不会重复写入
+            幂等写入：多次操作，但导致结果一次更改
+            事务写入：对应ck完成后，才写sink
+                预写日志：WAL dsAPI：GenericWriteAheadSink  提前缓存（批处理） 也可能重复
+                两阶段提交：2PC TwoPhaseCommitSinkFunction 开启事务
+                    外部系统必须提供事务支持
+
+    flink kafka 精确一次  k-f-k
+        offset保存为算子状态 写入ck
+            检查点分界线  传递  sink开启事务预提交 提交-通知jm
+
+        需要的配置
+            启用ck
+            producer传入语义 Semantic.exactly_once
+            配置kakfa读取数据的消费者隔离级别（指sink端的） 默认：read_uncommitted
+                修改为read_committed 表示消费者消费到未提交消息时停止消费，数据被标记提交才会继续消费
+            事务超时配置 flink连接器默认1h  kafka集群默认15min
+                要配置前面应≤后者
+
+
+
+

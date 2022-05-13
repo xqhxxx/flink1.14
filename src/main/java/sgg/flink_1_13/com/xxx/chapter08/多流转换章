@@ -1,0 +1,28 @@
+8.1分流
+简单实现  直接filter分开2个ds：：： 底层复制了三份。。。。
+
+
+侧输出流： 分流
+--类似于.split（）方法（1.13弃用） 改标签
+
+
+
+8.2 基本合流
+
+union：数据类型必须相同
+
+connect:  用的更多
+    放在一个cstream下里面 然后转换  统一格式->ds
+    example：billCheck
+
+    广播流 广播状态 后续加深
+
+8.3 基于时间的合流 双流联结  join  ---！！！只会筛选出匹配到的
+    1 窗口联结 window join
+        比较固定的
+        笛卡尔积
+
+    2 间隔联结 internal Join   ks--internalJoin --ks
+        指定时间区间的上下限 比如 【-2s  2s】
+
+    3 窗口同组联结 window CoGroup  类似于window join（不同 apply传参不一样）

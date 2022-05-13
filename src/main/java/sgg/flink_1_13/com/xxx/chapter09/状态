@@ -1,0 +1,49 @@
+9 状态
+
+数据是‘单个事件处理’  ---类似于map操作
+
+结合之前的数据--
+基于多个事件输出结果：：
+
+有一个任务维护，计算输出结果的所数有据，叫做这个任务单额状态
+
+
+9.1
+接收数据  获取状态 更新状态 发送数据
+算子
+富函数都可以获取上下文：无状态算子也可以自定义富函数方法使用
+---》所有的都可以
+
+状态管理 f有一套完整的机制：包括状态访问 持久化 故障恢复 扩展
+    ---调用相应API使用状态，或对应用的容错机制配置
+
+
+2 按键分区状态（keyed state） 最为常见
+    以key为作用范围进行隔离
+    必须基于keyedStream
+    基于状态描述器创建
+
+        ValueState      周期性计算pv 定时打印总的累加值
+        ListState       2join 全外连接
+        MapState        模拟滚动窗口
+        ReducingState
+        AggregatingState   聚合平均统计
+
+    2.4 状态生存时间 TTL time to live
+
+3 算子状态（operator state)  没有key，只有一个
+    多用于source sink等与外部连接的算子上   例：kafka的精准一次
+
+    ListState      缓存sink数据
+    UnionListState
+    BroadcastState    动态配置（规则）
+4 广播状态
+
+5 持久化
+    检查点
+
+    状态后端---管理状态
+        哈希表状态后端（默认）---放内存里
+        内嵌RocksDb状态后端---放硬盘  异步快照
+
+        可在yaml更改默认配置 代码配置

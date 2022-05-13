@@ -1,0 +1,20 @@
+
+数据接入  add水印---》ds
+
+1、直接开窗  全窗口函数
+所有数据放一个窗口   ！！！！无意义
+ds
+
+2、先按url 作key分组 滑动窗口统计每个窗口下：url的cnt数量----》urlCntDS
+#注 :一定要记住 处理的数据是 数据流    //key by 同时输出的数据 实际也是流一个一个输出
+#接下来   同一窗口 访问量  收集排序
+
+继续使用keyBy  使用窗口的windowEnd作为key分组 统计每个窗口下的top 2
+    要使用列表状态 将数据存到状态list中
+     然后 windowEnd+1ms的定时器 将list的数据处理输出
+
+-------二次开窗-+-----
+
+keyBy ：按时间窗口  统计 key的cnt ，包装窗口信息 -->bean
+再次keyBy：（以窗口endTime作为key） 将所有的bean放在状态list中，
+    定时endTime+1ms，触发统计
