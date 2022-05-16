@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
 
-
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -18,12 +17,12 @@
         </dependency>
 
 
-<!-- provided（表示执行和打包都不用此依赖，只有编译时用 集群的环境都有）-->
+        <!-- provided（表示执行和打包都不用此依赖，只有编译时用 集群的环境都有）-->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-scala_2.12</artifactId>
             <version>1.14.4</version>
-<!--            <scope>provided</scope>-->
+            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -42,7 +41,7 @@
             <version>1.14.4</version>
         </dependency>
 
-<!--        状态后端-->
+        <!--        状态后端-->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-statebackend-rocksdb_2.12</artifactId>
@@ -67,6 +66,37 @@
             <artifactId>flink-connector-kafka_2.12</artifactId>
             <version>1.14.4</version>
         </dependency>
+
+        <!--        桥接器-->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java-bridge_2.12</artifactId>
+            <version>1.14.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-runtime -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-runtime_2.12</artifactId>
+            <version>1.14.4</version>
+        </dependency>
+
+        <!--        14版本去掉了blink-->
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-planner -->
+<!--        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner_2.12</artifactId>
+            <version>1.14.4</version>
+            <scope>provided</scope>
+        </dependency>-->
+
+<!--     fsql   解析格式-->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-csv</artifactId>
+            <version>1.14.4</version>
+        </dependency>
+
 
         <!--        本地magus-->
         <dependency>
@@ -106,14 +136,14 @@
             <!--            <scope>provided</scope>-->
         </dependency>
 
-<!--        redis sink-->
+        <!--        redis sink-->
         <dependency>
             <groupId>org.apache.bahir</groupId>
             <artifactId>flink-connector-redis_2.11</artifactId>
             <version>1.0</version>
         </dependency>
 
-<!--        mysql sink-->
+        <!--        mysql sink-->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc_2.12</artifactId>
@@ -128,7 +158,7 @@
 
     </dependencies>
 
-<!--插件配置  java+scala-->
+    <!--插件配置  java+scala-->
     <build>
         <plugins>
             <!-- 编译插件 -->
@@ -139,7 +169,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-<!--                    <encoding>UTF-8</encoding>-->
+                    <!--                    <encoding>UTF-8</encoding>-->
                 </configuration>
             </plugin>
             <!-- scala编译插件 -->
@@ -147,11 +177,11 @@
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
                 <version>3.2.2</version>
-<!--                <configuration>-->
-<!--                    <scalaCompatVersion>2.12</scalaCompatVersion>-->
-<!--                    <scalaVersion>2.12.10</scalaVersion>-->
-<!--                    <encoding>UTF-8</encoding>-->
-<!--                </configuration>-->
+                <!--                <configuration>-->
+                <!--                    <scalaCompatVersion>2.12</scalaCompatVersion>-->
+                <!--                    <scalaVersion>2.12.10</scalaVersion>-->
+                <!--                    <encoding>UTF-8</encoding>-->
+                <!--                </configuration>-->
                 <executions>
                     <execution>
                         <id>compile-scala</id>
