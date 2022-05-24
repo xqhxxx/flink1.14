@@ -53,6 +53,7 @@ public class StateTest {
         AggregatingState<Event, String> myAggState;
 
 
+
         //        本地变量 对比
         Long count = 0L;
 
