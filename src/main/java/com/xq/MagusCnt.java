@@ -1,3 +1,4 @@
+/*
 package com.xq;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -10,11 +11,13 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTime
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
+*/
 /**
  * @author xqh
  * @date 2022/4/15
  * @apiNote
- */
+ *//*
+
 public class MagusCnt {
 
     public static void main(String[] args) throws Exception {
@@ -52,3 +55,4 @@ public class MagusCnt {
 
     }
 }
+*/

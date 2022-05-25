@@ -20,3 +20,19 @@
     动态表   不停的更新表的数据
     持续查询
 +i -u +u
+
+撤回流
+更新插入流 有key的存在 类似于map的put
+
+4 时间 窗口
+ 事件事件 ddl中定义  wm
+ts timestamp(3),
+ watermark for ts as ts- interval ‘5’ second
+
+ //时间戳 需转换
+ ts bigint,
+ ts_ltz as to_timestamp_ltz(ts,3),
+ watermark for ts_ltz as ts_ltz- interval ‘5’ second
+
+
+

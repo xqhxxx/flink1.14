@@ -1,3 +1,4 @@
+/*
 package com.xq;
 
 import com.magus.jdbc.net.OPSubscribe;
@@ -12,11 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+*/
 /**
  * @author xqh
  * @date 2022/4/15
  * @apiNote
- */
+ *//*
+
 public class MagusSource implements SourceFunction<StringBuffer> {
     private Boolean running = true;
     static StringBuffer buffer = new StringBuffer();
@@ -78,3 +81,4 @@ public class MagusSource implements SourceFunction<StringBuffer> {
     }
 
 }
+*/
