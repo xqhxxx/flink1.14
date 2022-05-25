@@ -38,22 +38,31 @@ public class SimpleTableExample {
 
         //创建表执行环境
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        //3 ds转换为table
         Table table1 = tableEnv.fromDataStream(ds);
-        table1.printSchema();
+//        table1.printSchema();
 
-        //写sql
+        //4 写sql
         Table rt = tableEnv.sqlQuery("select user,url,`timestamp` from " + table1);
-        tableEnv.toDataStream(rt).print("result:");
+//        tableEnv.toDataStream(rt).print("result:");
 
-//        基于table
+        //5 基于table
         Table rs2 = table1.select($("user"), $("url"))
                 .where($("user").isEqual("a"));
 
-        tableEnv.toDataStream(rs2).print("rs2:");
+        //6 表转换为流 打印输出
+//        tableEnv.toDataStream(rs2).print("rs2:");
+
+
+        //7 聚合
+        tableEnv.createTemporaryView("clickTable",table1);
+        Table agg = tableEnv.sqlQuery("select user ,count(url) from clickTable group by user");
+
+//        tableEnv.toDataStream(agg).print("agg:");  group by  不再是简单的追加打印
+        tableEnv.toChangelogStream(agg).print("agg:");//而是更新操作
+        //建议直接调用 toChangelogStream
 
 
         env.execute();
-
-
     }
 }

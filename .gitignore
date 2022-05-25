@@ -1,0 +1,6 @@
+# Project exclude paths
+/target/
+/src/test/
+/log/
+/out/
+/output/

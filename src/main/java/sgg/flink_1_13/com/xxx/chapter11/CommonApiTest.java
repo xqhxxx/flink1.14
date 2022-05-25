@@ -69,6 +69,8 @@ public class CommonApiTest {
         //执行sql 查询表
         Table t2 = tableEnv.sqlQuery("select user_name,url from res_t");
 
+        //执行聚合计算的查询转换
+        Table aggTable = tableEnv.sqlQuery("select user_name,count(url) as cnt from click_t group by  user_name");
 
         // 创建输出的表
         String creatOutDDL = "create table out_t(" +
@@ -80,8 +82,23 @@ public class CommonApiTest {
                 " 'format' = 'csv'" +
                 ") ";
         tableEnv.executeSql(creatOutDDL);
-    //输出表
-        t2.executeInsert("out_t");
+        //输出表
+//        t2.executeInsert("out_t");
 
+        //创建一个用于控制台打印
+        String creatPrintDDL = "create table print_t(" +
+                " user_name string," +
+                " cnt BIGINT " +
+                ") with (" +
+                " 'connector' = 'print'" +
+                ") ";
+
+        tableEnv.executeSql(creatPrintDDL);
+        //输出表
+//        t2.executeInsert("print_t");
+        aggTable.executeInsert("print_t");
+        //5> -U[ccc, 1]  -u表示更新前的数据
+        //5> +U[ccc, 2]   +u表示更新后的数据
     }
+
 }
