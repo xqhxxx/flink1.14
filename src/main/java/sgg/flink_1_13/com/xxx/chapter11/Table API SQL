@@ -34,5 +34,20 @@ ts timestamp(3),
  ts_ltz as to_timestamp_ltz(ts,3),
  watermark for ts_ltz as ts_ltz- interval ‘5’ second
 
+---1.12之前的版本  分组窗口函数  目前已弃用
+ 窗口 在sql中对应的函数调用 TUMBLE() HOP SESSION
+ 例如：TUMBLE(ts,interval ‘5’ second)
+
+ 1.13 新版本 窗口表值函数 tvfs
+    tvf
+    滚动 TUMBLE(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR)
+    滑动 HOP(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR)
+    累积  周期统计一段时间  每小时统计累积值 总共一天的
+        CUMULATE(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR,INTERVAL '1' DAYS)
+    会话（目前尚未完全支持）
+
+5 聚合agg 查询
+
+配置ttl 状态保持时间
 
 
