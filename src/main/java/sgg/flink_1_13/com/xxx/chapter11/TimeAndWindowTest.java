@@ -36,15 +36,15 @@ public class TimeAndWindowTest {
         tableEnv.executeSql(creatDDL);
 
         // 2  在流转换成table的时候定义时间属性
-        SingleOutputStreamOperator<Event> ds = env.addSource(new ClickSource())
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ZERO)
-                        .withTimestampAssigner(new SerializableTimestampAssigner<Event>() {
-                            @Override
-                            public long extractTimestamp(Event event, long l) {
-                                return event.timestamp;
-                            }
-                        }));
-        Table clickTable = tableEnv.fromDataStream(ds, $("user"), $("url"), $("timestamp").as("ts"), $("et").rowtime());//$("et").proctime() 处理时间
+//        SingleOutputStreamOperator<Event> ds = env.addSource(new ClickSource())
+//                .assignTimestampsAndWatermarks(WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ZERO)
+//                        .withTimestampAssigner(new SerializableTimestampAssigner<Event>() {
+//                            @Override
+//                            public long extractTimestamp(Event event, long l) {
+//                                return event.timestamp;
+//                            }
+//                        }));
+//        Table clickTable = tableEnv.fromDataStream(ds, $("user"), $("url"), $("timestamp").as("ts"), $("et").rowtime());//$("et").proctime() 处理时间
 //        clickTable.printSchema();
 
         //聚合查询转换
@@ -64,11 +64,11 @@ public class TimeAndWindowTest {
 
         //3.2 滑动窗口  间隔，窗口大小
         Table hopTable = tableEnv.sqlQuery("select user_name,count(1) as cnt,window_end as endT from table(hop(table clickTable,descriptor(et),interval '5' second,interval '10' second)) group by user_name,window_end,window_start ");
-        tableEnv.toChangelogStream(hopTable).print("hopTable；");
+//        tableEnv.toChangelogStream(hopTable).print("hopTable；");
 
         //3.3 累积窗口  间隔，窗口大小
         Table cumTable = tableEnv.sqlQuery("select user_name,count(1) as cnt,window_end as endT from table(cumulate(table clickTable,descriptor(et),interval '5' second,interval '10' second)) group by user_name,window_end,window_start ");
-        tableEnv.toChangelogStream(hopTable).print("cumTable；");
+        tableEnv.toChangelogStream(cumTable).print("cumTable；");
 
 
         env.execute();

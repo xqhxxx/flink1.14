@@ -42,12 +42,19 @@ ts timestamp(3),
     tvf
     滚动 TUMBLE(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR)
     滑动 HOP(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR)
-    累积  周期统计一段时间  每小时统计累积值 总共一天的
+    累积  周期统计一段时间  每小时统计累积值 总共一天的  还是没看懂
         CUMULATE(TABLE EventTable,DESCRIPTOR(ts),INTERVAL '1' HOUR,INTERVAL '1' DAYS)
     会话（目前尚未完全支持）
 
 5 聚合agg 查询
 
 配置ttl 状态保持时间
+
+开窗 over
+范围只有之前  到当前行
+
+preceding and current row
+    范围间隔  range between interval ‘1’ hour preceding and current row
+    行间隔  rows between 5preceding and current row 一共6行
 
 
