@@ -1,7 +1,7 @@
 aaa,/home,1000
 bbb,/data,2000
-ccc,/pic,3000
+ccc,/pic?id=100,3000
 ccc,/pic,5000
-ccc,/pic,9000
+ccc,/pic?id=10,9000
 ccc,/pic,13000
 ccc,/pic,15000

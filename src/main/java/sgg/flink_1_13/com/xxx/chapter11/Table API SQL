@@ -57,4 +57,15 @@ preceding and current row
     范围间隔  range between interval ‘1’ hour preceding and current row
     行间隔  rows between 5preceding and current row 一共6行
 
+topN 结合开窗
 
+6 联结join查询
+    6.1 常规join
+    6.2 间隔join --1.14支持window join
+
+
+7 函数：  系统函数  udf
+
+    标量函数 1对1输出 ScalarFunction
+    表函数 1对多输出 TableFunction
+    聚合函数 多对1  aggregateFunction

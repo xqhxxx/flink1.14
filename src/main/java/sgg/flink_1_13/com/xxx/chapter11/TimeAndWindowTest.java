@@ -68,8 +68,12 @@ public class TimeAndWindowTest {
 
         //3.3 累积窗口  间隔，窗口大小
         Table cumTable = tableEnv.sqlQuery("select user_name,count(1) as cnt,window_end as endT from table(cumulate(table clickTable,descriptor(et),interval '5' second,interval '10' second)) group by user_name,window_end,window_start ");
-        tableEnv.toChangelogStream(cumTable).print("cumTable；");
+//        tableEnv.toChangelogStream(cumTable).print("cumTable；");
 
+
+//        4 开窗聚合  over
+        Table overTable = tableEnv.sqlQuery("select user_name,avg(ts)over( partition by user_name order by et rows between 3 preceding and current row) as avg_ts from clickTable");
+        tableEnv.toChangelogStream(overTable).print("overTable；");
 
         env.execute();
 
