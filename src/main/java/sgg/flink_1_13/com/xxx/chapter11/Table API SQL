@@ -70,3 +70,7 @@ topN 结合开窗
     表函数 1对多输出 TableFunction
     聚合函数 多对1  aggregateFunction
     表聚合函数 多对多 tableAggregateFunction   比较复杂 sql没有 只能table api调用
+
+8 sql客户端  测试练习用
+
+9连接外部系统
