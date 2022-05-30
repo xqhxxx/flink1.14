@@ -34,10 +34,10 @@ public class UdfTest_AggregateFun {
         tableEnv.executeSql(creatDDL);
 
 //      2 注册ud表函数
-        tableEnv.createTemporarySystemFunction("MyFun",MyFun.class);
+        tableEnv.createTemporarySystemFunction("MyFun", MyFun.class);
 
 //        3调用  侧向表连接  lateral
-        Table table = tableEnv.sqlQuery("select user,url,word,length from clickTable,lateral table(MyFun(url)) as T(word,length)  ");
+        Table table = tableEnv.sqlQuery("select user,MyFun(ts,1) as w_avg from clickTable group by user ");
 
 //        4打印
         tableEnv.toChangelogStream(table).print();
@@ -46,17 +46,22 @@ public class UdfTest_AggregateFun {
     }
 
     //累加器类型
-    public  static  class WeighterAvgAccumulator{
-        public  long sum =0;
-        public  int count=0;
+    public static class WeighterAvgAccumulator {
+        public long sum = 0;
+        public int count = 0;
     }
 
     //udf 聚合函数      计算加权平均
-    public static class MyFun extends AggregateFunction<Long,WeighterAvgAccumulator> {
+    public static class MyFun extends AggregateFunction<Long, WeighterAvgAccumulator> {
 
         @Override
-        public Long getValue(WeighterAvgAccumulator weighterAvgAccumulator) {
-            return null;
+        public Long getValue(WeighterAvgAccumulator acc) {
+            if (acc.count == 0) {
+                return null;
+            } else {
+                return acc.sum / acc.count;
+            }
+
         }
 
         @Override
@@ -65,9 +70,9 @@ public class UdfTest_AggregateFun {
         }
 
         //累加计算方法
-        public  void accumulator(WeighterAvgAccumulator acc,Long iValue,Integer iWeight){
-            acc.sum+=iValue*iWeight;
-            acc.count+=iWeight;
+        public void accumulate(WeighterAvgAccumulator acc, Long iValue, Integer iWeight) {
+            acc.sum += iValue * iWeight;
+            acc.count += iWeight;
         }
     }
 

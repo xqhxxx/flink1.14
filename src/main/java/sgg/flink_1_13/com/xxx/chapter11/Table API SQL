@@ -69,3 +69,4 @@ topN 结合开窗
     标量函数 1对1输出 ScalarFunction
     表函数 1对多输出 TableFunction
     聚合函数 多对1  aggregateFunction
+    表聚合函数 多对多 tableAggregateFunction   比较复杂 sql没有 只能table api调用
