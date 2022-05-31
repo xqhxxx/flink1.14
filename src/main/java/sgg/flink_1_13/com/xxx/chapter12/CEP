@@ -1,3 +1,23 @@
 12  flink cep
 complex event processing
 复杂事件处理
+
+--检测到特定的 事件组合 并进行处理
+
+其实就是模式匹配
+
+应用：风险控制
+    用户画像
+    运维监控
+
+3 模式API（pattern
+  3.1 个体模式   后面 可以跟一个量词，用来指定循环次数
+     2量词：
+        .oneORMore 一次或多次
+        .times（3）  表示连续三次
+        .times（2,4）  表示连续2 3 4 次都行
+        .greedy（） 用在循环后 贪心  匹配尽可能多的  例如times（2,4）.greedy（）先处理4个，没有再处理3个 再2个
+        .optional（） 可以满足 也可以不满足 即0次也行
+        .timesOrMore(n)  n或多次
+
+     3条件：
