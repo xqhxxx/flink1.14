@@ -1,6 +1,7 @@
 12  flink cep
-complex event processing
-复杂事件处理
+complex event processing  复杂事件处理
+
+一些列
 
 --检测到特定的 事件组合 并进行处理
 
@@ -21,3 +22,29 @@ complex event processing
         .timesOrMore(n)  n或多次
 
      3条件：
+        简单、迭代、复合、终止
+        限定子类型.subtype（sunEvent.class）
+
+  3.2组合模式  模式序列
+        个体连接起来的
+     限制条件
+        开始 begin
+        严格紧邻 next
+        宽松紧邻 followedBy （量词：默认是此条件）
+        非确定性宽松 followedByAny  可以重复使用之前匹配过的事件
+     其他条件
+        .notNext  不能紧邻
+        .notFollowedBy   后面不能出现事件 （不能以此条件结尾 后面需再跟条件）
+
+        .within(Time.second(10))  时间限制 第一个事件到最后一个事件的最大时间间隔
+
+  3.3 模式组
+        传模式  例如：next（ new pattern）
+
+  3.4 匹配跳过
+        greedy 是只留一个
+
+       begin传入第二个参数：匹配跳过策略
+
+4 模式的检测处理
+    将模式应用到流上

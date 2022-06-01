@@ -32,12 +32,13 @@ public class LoginFailDetectExample {
                 new LoginEvent("user_2", "192.168.0.1", "fail", 7000L),
                 new LoginEvent("user_2", "192.168.0.1", "fail", 8000L),
                 new LoginEvent("user_2", "192.168.0.1", "success", 6000L)
-        ).assignTimestampsAndWatermarks(WatermarkStrategy.<LoginEvent>forBoundedOutOfOrderness(Duration.ofSeconds(3)).withTimestampAssigner(new SerializableTimestampAssigner<LoginEvent>() {
-            @Override
-            public long extractTimestamp(LoginEvent loginEvent, long l) {
-                return loginEvent.timestamp;
-            }
-        }));
+        ).assignTimestampsAndWatermarks(WatermarkStrategy.<LoginEvent>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+                .withTimestampAssigner(new SerializableTimestampAssigner<LoginEvent>() {
+                    @Override
+                    public long extractTimestamp(LoginEvent loginEvent, long l) {
+                        return loginEvent.timestamp;
+                    }
+                }));
 
 //        2 定义模式 连续三次登录失败
         Pattern<LoginEvent, LoginEvent> pattern = Pattern.<LoginEvent>begin("first") //第一次登录失败事件  泛型 标签名
@@ -48,6 +49,9 @@ public class LoginFailDetectExample {
                         return loginEvent.eventType.equals("fail");
                     }
                 })
+//                .times(3).consecutive()//连续出现3次  类似 严格紧邻 next
+//                .times(3).allowCombinations()//组合3次 类似  非确定性宽松 followedByAny
+
                 .next("second")//紧跟的第二次登陆失败
                 .where(new SimpleCondition<LoginEvent>() {//筛选条件
                     @Override
@@ -82,6 +86,7 @@ public class LoginFailDetectExample {
         });
 
         warnDS.print();
+
         env.execute();
     }
 }
