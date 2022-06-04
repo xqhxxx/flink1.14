@@ -51,7 +51,6 @@ public class LoginFailDetectExample {
                 })
 //                .times(3).consecutive()//连续出现3次  类似 严格紧邻 next
 //                .times(3).allowCombinations()//组合3次 类似  非确定性宽松 followedByAny
-
                 .next("second")//紧跟的第二次登陆失败
                 .where(new SimpleCondition<LoginEvent>() {//筛选条件
                     @Override
