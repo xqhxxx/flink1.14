@@ -13,3 +13,8 @@
 分层  sql  table dataStream 有状态的处理函数
 
 1.5 flink  spark
+    flink的延迟是毫秒级的。秒级
+    flink是严格精准一次性语义
+    窗口API更加灵活 语义丰富
+    事件时间语义，处理延迟数据
+    更加灵活地对状态编程的API
