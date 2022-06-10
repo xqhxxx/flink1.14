@@ -1,0 +1,3 @@
+CDC Connectors for Apache Flink 是一组源连接器，用于®Apache Flink®，使用更改数据捕获 （CDC） 从不同的数据库引入更改
+
+https://ververica.github.io/flink-cdc-connectors/master/index.html
