@@ -1,0 +1,25 @@
+1
+    JobManager 控制一个应用程序执行的主进程 申请rm资源 检查点...
+    ResourceManager 管理tm的slot 申请yarn的rm资源 释放空闲tm
+    TaskManager 提供slot 执行任务
+    Dispatcher  rest接口  webUI
+
+2 任务提交流程
+    app提交-启动am（jm）-申请rm--让tm提供slot-执行任务；
+    yarn提交   --从hdfs加载jar
+
+3 任务调度原理
+    Client 将JobGraph 交给JM
+    JM  调度job，（task）到tm执行，协调task做ck
+    TM   netty连接 接收数据处理
+
+  TM---Slots 每个 task slot 表示 TaskManager 拥有资源的一个固定大小的子集。
+  Slot---parallelism    并发执行能力---实际使用
+
+ 执行图（ExecutionGraph）
+    Flink 程序直接映射成的数据流图是 StreamGraph
+    四层： StreamGraph -> JobGraph -> ExecutionGraph -> 物理执行图
+           拓扑结构     优化-算子链      并行化          部署task“图”
+
+ 并行度
+ 任务链  one to one
