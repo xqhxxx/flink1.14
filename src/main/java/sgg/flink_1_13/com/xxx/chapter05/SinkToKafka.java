@@ -51,17 +51,17 @@ public class SinkToKafka {
             }
         });
         //3. sink
-        ts.addSink(new FlinkKafkaProducer<String>("broker ", "topic", new SimpleStringSchema()));
+//        ts.addSink(new FlinkKafkaProducer<String>("broker ", "topic", new SimpleStringSchema()));
 
-        //ts.sinkTo(KafkaSink.<String>builder()
-        //        .setBootstrapServers("")
-        //        .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-        //                .setTopic("")
-        //                .setValueSerializationSchema(new SimpleStringSchema())
-        //                .build()
-        //        )
-        //        .build()
-        //);
+        ts.sinkTo(KafkaSink.<String>builder()
+                .setBootstrapServers("192.168.0.4:9092")
+                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                        .setTopic("topic")
+                        .setValueSerializationSchema(new SimpleStringSchema())
+                        .build()
+                )
+                .build()
+        );
 
         env.execute();
 

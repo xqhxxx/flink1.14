@@ -1,0 +1,13 @@
+env-->source-->transform-->sink
+
+1 执行Environment
+2 source list 文件 kafka uds
+3 transform map flatmap filter keyBy reduce spilt和select Connect和CoMap Union
+    1．Union 之前两个流的类型必须是一样，Connect 可以不一样，在之后的 coMap中再去调整成为一样的。
+    2. Connect 只能操作两个流，Union 可以操作多个。
+4 数据类型 基础数据类型、元组（Tuples）、Java 简单对象（POJOs）、 Scala 样例类（case classes）、 其它（Arrays, Lists, Maps, Enums, etc）
+5 UDF
+    函数类（Function Classes）
+    匿名函数（Lambda Functions）
+    富函数（Rich Functions） 运行环境上下文、生命周期方法
+6 sink Kafka Redis Elasticsearch JDBC 自定义 sink
