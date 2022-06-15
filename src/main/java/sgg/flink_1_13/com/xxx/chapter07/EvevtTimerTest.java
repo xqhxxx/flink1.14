@@ -57,9 +57,7 @@ public class EvevtTimerTest {
     }
 
     ///自定义测试数据
-
     public static  class  CusSource implements SourceFunction<Event>{
-
         @Override
         public void run(SourceContext<Event> ctx) throws Exception {
         //    直接发出测试数据
@@ -81,7 +79,7 @@ public class EvevtTimerTest {
 }
 
 /*
-* 1s数据到达时刻  但此刻wm未更新 还是前一条数据wm:999 然后数据处理完 更新wm:：999
+* 1s数据到达时刻  但此刻wm未更新 还是初始值 wm:- 然后数据处理完 更新wm:：999
 * 11s数据到达 wm：999，数据处理完，wm：10999
 * 11.001s数据到达 wm：10999 数据处理完，wm：11000
 * 然后触达定时器（1+10S）：

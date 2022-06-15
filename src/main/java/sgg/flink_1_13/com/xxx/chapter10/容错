@@ -54,11 +54,7 @@
         需要的配置
             启用ck
             producer传入语义 Semantic.exactly_once
-            配置kakfa读取数据的消费者隔离级别（指sink端的） 默认：read_uncommitted
+            配置 Kafka 读取数据的消费者隔离级别（指sink端的） 默认：read_uncommitted
                 修改为read_committed 表示消费者消费到未提交消息时停止消费，数据被标记提交才会继续消费
             事务超时配置 flink连接器默认1h  kafka集群默认15min
                 要配置前面应≤后者
-
-
-
-

@@ -26,7 +26,7 @@ import java.time.Duration;
  * @apiNote
  * ListState
  * 两条流join
- * <p> 列表状态 全外连接
+ * 列表状态 全外连接
  *
  */
 public class TwoStreamJoinExample {

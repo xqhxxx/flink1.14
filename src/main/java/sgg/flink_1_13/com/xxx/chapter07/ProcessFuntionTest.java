@@ -47,9 +47,6 @@ public class ProcessFuntionTest {
 
                 System.out.println(getRuntimeContext().getIndexOfThisSubtask());
                 //getRuntimeContext().getState()
-
-
-
             }
         }).print();
 

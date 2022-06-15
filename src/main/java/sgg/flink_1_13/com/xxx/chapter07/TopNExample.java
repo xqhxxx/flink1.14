@@ -35,9 +35,7 @@ public class TopNExample {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
         env.setParallelism(1);
-
         SingleOutputStreamOperator<Event> ds = env.addSource(new ClickSource())
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ZERO)
                         .withTimestampAssigner(new SerializableTimestampAssigner<Event>() {
@@ -48,7 +46,7 @@ public class TopNExample {
                         }));
 
 
-        //1 分组 url   统计窗口访问量
+        //1 keyBy分组 url   统计窗口访问量
         //一定要记住 处理的数据是 数据流
         //key by 同时输出的数据 实际也是流一个一个
         SingleOutputStreamOperator<UrlViewCnt> URLds =
@@ -63,17 +61,15 @@ public class TopNExample {
                 .process(new TopNPF(2))
                 .print();
 
-
         env.execute();
-
     }
 
     //实现自定义的key的pf  二次开窗 统计排序
+    //key in out
     public static class TopNPF extends KeyedProcessFunction<Long, UrlViewCnt, String> {
         //定义属性：n
         private Integer n;
-
-        //        定义列表状态
+        // 定义列表状态
         private ListState<UrlViewCnt> urlViewCntListState;
 
         public TopNPF(Integer n) {
@@ -127,7 +123,7 @@ public class TopNExample {
         }
     }
 
-    //增量聚合
+    //增量聚合 in acc out
     public static class UrlCntAgg implements AggregateFunction<Event, Long, Long> {
         @Override
         public Long createAccumulator() {
@@ -141,8 +137,9 @@ public class TopNExample {
 
         @Override
         public Long getResult(Long acc) {
-            return acc;//窗口输入
-        }
+            return acc;
+            //窗口输入； 将结果返回 作为后面窗口的入参
+         }
 
         @Override
         public Long merge(Long aLong, Long acc1) {
@@ -152,7 +149,7 @@ public class TopNExample {
     }
 
     //自定义PWF 包装窗口信息
-    //in  out key
+    //in  out key tw
     public static class UrlViewCntRs extends ProcessWindowFunction<Long, UrlViewCnt, String, TimeWindow> {
         @Override
         //key ctx in out

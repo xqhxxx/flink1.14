@@ -26,10 +26,7 @@ import java.util.HashMap;
  * @date 2022/4/22
  * @apiNote 实时统计热门url  ‘
  * 统计最近 10秒最热门的url 并且每5秒更新一次数据
- * <p>
  * 滑动窗口  访问量   排序 前2
- * <p>
- * <p>
  * ---用全窗口函数
  */
 public class TopNExample_ProcessAllWindowFun {
@@ -53,19 +50,16 @@ public class TopNExample_ProcessAllWindowFun {
                 .aggregate(new UrlHashMapCntAgg(), new UrlAllWRes())
                 .print();
 
-
         env.execute();
 
     }
 
     //增量聚合
     public static class UrlHashMapCntAgg implements AggregateFunction<String, HashMap<String, Long>, ArrayList<Tuple2<String, Long>>> {
-
         @Override
         public HashMap<String, Long> createAccumulator() {
             return new HashMap<>();
         }
-
         @Override
         public HashMap<String, Long> add(String s, HashMap<String, Long> acc) {
             if (acc.containsKey(s)) {
@@ -100,7 +94,6 @@ public class TopNExample_ProcessAllWindowFun {
     //自定义PWF 包装窗口信息
     //in  out key
     public static class UrlAllWRes extends ProcessAllWindowFunction<ArrayList<Tuple2<String, Long>>, String, TimeWindow> {
-
         //key ctx in out
         @Override
         public void process(ProcessAllWindowFunction<ArrayList<Tuple2<String, Long>>, String, TimeWindow>.Context context, Iterable<ArrayList<Tuple2<String, Long>>> iterable, Collector<String> collector) throws Exception {

@@ -21,9 +21,7 @@ import java.time.Duration;
 public class ProcessingTimerTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
         env.setParallelism(1);
-
         SingleOutputStreamOperator<Event> ds = env.addSource(new ClickSource());
 
         ds.keyBy(x -> x.user)
