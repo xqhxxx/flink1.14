@@ -62,7 +62,7 @@ public class TimeAndWindowTest {
         Table tumbleTable = tableEnv.sqlQuery("select user_name,count(1) as cnt,window_end as endT from table( tumble(table clickTable,descriptor(et),interval '10' second)) group by user_name,window_end,window_start ");
 //        tableEnv.toChangelogStream(tumbleTable).print("tumbleTable；");
 
-        //3.2 滑动窗口  间隔，窗口大小
+        //3.2 滑动窗口  滑动间隔，窗口大小  ！！！注意 与dsAPI顺序相反
         Table hopTable = tableEnv.sqlQuery("select user_name,count(1) as cnt,window_end as endT from table(hop(table clickTable,descriptor(et),interval '5' second,interval '10' second)) group by user_name,window_end,window_start ");
 //        tableEnv.toChangelogStream(hopTable).print("hopTable；");
 

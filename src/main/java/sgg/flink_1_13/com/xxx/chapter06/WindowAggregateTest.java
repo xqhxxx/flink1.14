@@ -43,7 +43,7 @@ public class WindowAggregateTest {
                 .window(TumblingEventTimeWindows.of(Time.seconds(10)))
                 .aggregate(new AggregateFunction<Event, Tuple2<Long, Integer>, String>() {
                     @Override
-                    //累加器
+                    //累加器  初始化 赋值
                     public Tuple2<Long, Integer> createAccumulator() {
                         return Tuple2.of(0L, 0);
                     }

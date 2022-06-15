@@ -58,8 +58,8 @@ public class WindowTest {
                 })
                 .keyBy(x -> x.f0)
                 //.window(EventTimeSessionWindows.withGap(Time.seconds(1)))
-                .window(TumblingEventTimeWindows.of(Time.seconds(10))) //滚动事件
-                //.window(SlidingEventTimeWindows.of(Time.hours(1),Time.minutes(5))) //
+//                .window(TumblingEventTimeWindows.of(Time.seconds(10))) //滚动事件
+                .window(SlidingEventTimeWindows.of(Time.hours(1),Time.minutes(5))) //
                 //        .countWindow(10,2)//滑动计数
                 .reduce(new ReduceFunction<Tuple2<String, Long>>() {
                     @Override
