@@ -1,0 +1,68 @@
+71 篇 Flink 实战及原理解析文章（面试必备）
+https://blog.csdn.net/qq_34608620/article/details/122931863
+
+去重
+1、MapState ：窗口划分； 分组； 状态函数实现  ms保存数据、vs保存数量（ms必须迭代才能获取数据量）；定时器数据清理。
+2、sql去重：
+    a. select t,count(distinct id) from group by
+    b. s c(*) f(s d from) as t group by
+    第二种更合适
+3、HyperLogLog去重  基数估计统计算法  存在一定的误差
+4、bitmap精确去重：  精确去重又能不消耗太多的存储；要将去重的id转换为一串数字（字符串转数字，leaf、snowflake）
+end、热点问题（某个id的量特别大）： GROUP BY day, MOD(HASH_CODE(id), 1024)，取id的hashCode然后对1024取余，也就是将id划分到1024个桶里面去，那么里层通过对day与桶编号进行去重(cnt)外层只需要对cnt执行sum操作即可，因为分桶操作限制了相同的id 一定会在相同的桶里面
+
+实战
+
+窗口
+1、window实现分析
+  a.  窗口数据如何分配。  分配器 ：滚动滑动
+  b.  窗口数据在触发前保存在哪里。    flink 是有状态的流处理, 其中间处理数据都会保存在 state
+  c.  窗口操作是如何触发的。 窗口的endTime < watermark
+  d.  窗口数据什么时候清理。  注册定时清理窗口数据,数据的清理时间是窗口的endTime+allowedLateness
+  e.  延时数据与延时窗口的区别。数据时间（窗口end时间）< watermark
+  f.  为什么聚合操作使用ReduceFunction 比WindowFunction 性能要好。 边接收数据边聚合，不用保存所有数据，对内存压力小
+  g.  窗口 allowedLateness 对窗口的影响.  窗口延迟的二道防线；触发窗口，但是不清理窗口；a内存消耗更大 b数据输出(多次)  ，需保持幂等性
+2、count window
+3、窗口实用触发器:ContinuousEventTimeTrigger  指定一个固定时间间隔interval，不需要等到窗口结束才能获取结果，能够在固定的interval获取到窗口的中间结果。  现在tvf cumulate累积函数
+
+维度服务
+
+join
+1、ds的coGroup与三种join
+    coGroup：两个不同的DataStream联合起来，在相同的窗口内按照相同的key分组处理
+    join：默认inner join ；两个流的相同key的每一对数据
+    Left/Right join实现: 通过CoGroup来实现  --for循环以左（右）为主
+2、interval join：两个keys流，相同的key在一个相对时间区间内进行连接（inner）
+3、sql Join：
+    global join：
+    Time-windowed join: 基于时间窗口的join，条件中带有时间属性条件
+    ！！！其实现与interval join 使用了相同的实现方式，不同的是：
+       a. Time-windowed Join 即可支持Event-Time，也可支持Processing-Time
+       b. interval join 只支持inner join,Time-windowed Join支持多种类型join
+    ds设置ttl清理、sql设置Idle State Retention Time withIdleStateRetentionTime(minTime: Time, maxTime: Time) 必须间隔超过5min
+
+
+topN
+1、窗口TopN：
+    a.订单时间为事件时间
+    b.区域+商品维度，计算每个10min的销售额  滚动窗口
+    c.区域维度，条件top10的商品    二次开窗
+2、全局TopN：
+    a.按照区域areaId+商品gdsId分组，计算每个分组的累计销售额
+    b.得到的区域areaId+商品gdsId维度的销售额按照区域areaId分组，然后求得TopN的销售额商品，并且定时更新输出
+    与窗口TopN不同，全局TopN没有时间窗口的概念，也就没有时间的概念，因此使用ProcessingTime语义即可，并且也不能再使用Window算子来操作，但是在这个过程中需要完成数据累加操作与定时输出功能，选择ProcessFunction函数来完成，使用State保存中间结果数据，保证数据一致性语义，使用定时器来完成定时输出功能。
+散记
+
+源码
+
+任务提交
+
+时间系统
+
+精准一次
+
+运维
+
+cep
+
+clickhouse
