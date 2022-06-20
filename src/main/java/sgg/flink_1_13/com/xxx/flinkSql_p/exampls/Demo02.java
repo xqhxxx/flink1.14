@@ -60,18 +60,17 @@ public class Demo02 {
         Table resultTable = tableEnv.sqlQuery(querySql);
 
         // 3. 将金额结果转为 DataStream，然后自定义超过 1w 的报警逻辑
-        tableEnv.toDataStream(resultTable, Row .class)
-                .flatMap(new FlatMapFunction<Row, Object>() {
-                    @Override
-                    public void flatMap(Row value, Collector<Object> out) throws Exception {
-                        long l = Long.parseLong(String.valueOf(value.getField("sum_money")));
-
-                        if (l > 10000L) {
-                            log.info("报警，超过 1w");
-                        }
-                    }
-                });
-
+        tableEnv.toDataStream(resultTable).flatMap(new FlatMapFunction<Row, String>() {
+            @Override
+            public void flatMap(Row value, Collector<String> out) throws Exception {
+//                System.out.println(value.toString());
+                Long sum_money = (Long) value.getField("sum_money");
+                long l = sum_money;
+                if (l > 1000L) {
+                    log.info("报警，超过 1w");
+                }
+            }
+        });
         env.execute();
 
     }
