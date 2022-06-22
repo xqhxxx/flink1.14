@@ -37,9 +37,10 @@ public class EvevtTimerTest {
         ds.keyBy(x -> x.user)
                 .process(new KeyedProcessFunction<String, Event, String>() {
                     @Override
-                    public void processElement(Event event, KeyedProcessFunction<String, Event, String>.Context context, Collector<String> collector) throws Exception {
+                    public void processElement(Event event, Context context, Collector<String> collector) throws Exception {
                         Long ct = context.timestamp();
-                        collector.collect(context.getCurrentKey() + " 数据到达 时间：:" + new Timestamp(ct)+" wm: "+context.timerService().currentWatermark());
+                        collector.collect(context.getCurrentKey() + " 数据到达 时间：:"
+                                + new Timestamp(ct)+" wm: "+context.timerService().currentWatermark());
 
                         //注册一个10秒的定时器
                         context.timerService().registerEventTimeTimer(ct + 10 * 1000L);

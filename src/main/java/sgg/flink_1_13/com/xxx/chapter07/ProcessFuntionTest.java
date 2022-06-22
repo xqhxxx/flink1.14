@@ -36,14 +36,14 @@ public class ProcessFuntionTest {
             public void processElement(Event event, ProcessFunction<Event, String>.Context context, Collector<String> collector) throws Exception {
                 if (event.user.equals("Mary")) {
                     collector.collect(event.user + " clicks " + event.url);
-                }else if (true){
+                } else if (true) {
 
-                }else {
+                } else {
                     collector.collect("gun");
                 }
 
-                System.out.println("tm：：："+context.timestamp());
-                System.out.println("WM:"+context.timerService().currentWatermark());
+                System.out.println("tm：：：" + context.timestamp());
+                System.out.println("WM:" + context.timerService().currentWatermark());
 
                 System.out.println(getRuntimeContext().getIndexOfThisSubtask());
                 //getRuntimeContext().getState()

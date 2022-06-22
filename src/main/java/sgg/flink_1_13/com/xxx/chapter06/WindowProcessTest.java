@@ -65,7 +65,7 @@ public class WindowProcessTest {
             //结合窗口信息
             Long start=context.window().getStart();
             Long end=context.window().getEnd();
-            out.collect("窗口 "+new Timestamp(start)+ "~"+new Timestamp(end)+"uv值为："+uv );
+            out.collect("窗口 "+new Timestamp(start)+ "~"+new Timestamp(end)+" uv值为："+uv );
 
         }
     }
