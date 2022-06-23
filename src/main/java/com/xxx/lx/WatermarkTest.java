@@ -20,9 +20,7 @@ import org.apache.flink.util.Collector;
  * 比较  水位线的生成时刻 以及触发
  */
 public class WatermarkTest {
-
     public static void main(String[] args) throws Exception {
-
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
         env.getConfig().setAutoWatermarkInterval(1);
