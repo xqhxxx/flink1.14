@@ -20,14 +20,14 @@ object WriteToKafkaSink {
         val env = StreamExecutionEnvironment.getExecutionEnvironment
 
     //todo 定义socket的source源
-    val text: DataStream[String] = env.socketTextStream(hostname = "192.168.0.4", port = 6666)
-//    val text: DataStream[String] = env.readTextFile("D:\\BD\\myProject\\flink\\a.txt")
+//    val text: DataStream[String] = env.socketTextStream(hostname = "localhost", port = 6666)
+    val text: DataStream[String] = env.readTextFile("D:\\works\\jxtech\\project_code\\sx\\0809sxData\\kafka-data.txt")
 
     import org.apache.flink.api.scala._
 
     //todo 处理数据
     val mes: DataStream[String] = text
-      .flatMap(_.split(" "))
+//      .flatMap(_.split(" "))
 //      .map((_, 1))
 //      .keyBy(_._1)
 //      .sum(position = 1)

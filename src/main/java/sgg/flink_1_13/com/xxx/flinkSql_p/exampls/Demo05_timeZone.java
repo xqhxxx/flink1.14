@@ -5,7 +5,7 @@ package sgg.flink_1_13.com.xxx.flinkSql_p.exampls;
  * @date 2022/6/20  11:13:59
  * @apiNote
  */
-public class Demo05_时区 {
+public class Demo05_timeZone {
     /*
     * sql时区
     *  1.13 之前，DDL create table 中使用 PROCTIME() 指定处理时间列时，返回值类型为 TIMESTAMP(3) 类型，而 TIMESTAMP(3) 是不带任何时区信息的，默认为 UTC 时间（0 时区）。
